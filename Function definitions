@@ -1,0 +1,27 @@
+//Functions' Definitions
+
+//converting time from int to string
+String^ time_calc(int a, int b) {
+	String^h = Convert::ToString(a);
+	String^m = Convert::ToString(b);
+	if (m == "0") {
+		m = ":00";
+	}
+	else if (m == "30") {
+		m = ":30";
+	}
+	return h + m;
+}
+
+//Successful booking
+void booking_succeeded(int i, int x, int y){
+	MessageBox::Show("Theater ID: " + ToSystem(movie[i].screening_info[x].theater.id) + "\nEnjoy your Movie.", "Booking Succeeded");
+	movie[i].screening_info[x].theater.reserved_seats += y;
+}
+
+//Booking cancelled message
+void booking_cancelled(){
+	MessageBox::Show("We remain at your service for any future bookings you might wish to make.", "Booking Cancelled");
+}
+
+//End of Functions' Definitions
