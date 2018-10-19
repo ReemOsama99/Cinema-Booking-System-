@@ -1,5 +1,17 @@
 //Functions' Definitions
 
+//Converting from Std to System String
+String^ ToSystem(string s){
+	String^g = gcnew String(s.c_str());
+	return g;
+}
+
+//converting from System to std string
+string ToStd(String^ s){
+	 string g = msclr::interop::marshal_as<string>(s);
+	 return g;
+}
+
 //converting time from int to string
 String^ time_calc(int a, int b) {
 	String^h = Convert::ToString(a);
