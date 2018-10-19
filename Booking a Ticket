@@ -1,0 +1,110 @@
+required_tickets = Convert::ToInt32(txt_no_tickets->Text);
+				 if (required_tickets <= 0)
+				 {
+					 MessageBox::Show("Please enter a number greater than zero.", "Invalid Input", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				 }
+				 else
+				 {
+					 for (int i = 0; i < no_movies; ++i)
+					 {
+						 if (cbx_book_movie->Text == ToSystem(movie[i].title))
+						 {
+							 //Movie Choosen
+							 for (int j = 0; j < no_theaters; ++j)
+							 {
+								 if ((time_now.hour == movie[i].screening_info[j].time.hour && time_now.min - movie[i].screening_info[j].time.min <= 15) || (time_now.hour < movie[i].screening_info[j].time.hour))
+								 {
+									 //Time Available
+									 time_available = true;
+									 if (movie[i].screening_info[j].theater.capacity - movie[i].screening_info[j].theater.reserved_seats >= required_tickets)
+									 {
+										 //Booking Succeeded >> No. of tickets required available
+										 booked_tickets = required_tickets;
+										 booking_succeeded(i, j, booked_tickets);
+										 break;
+									 }
+									 else if (movie[i].screening_info[j].theater.capacity == movie[i].screening_info[j].theater.reserved_seats)
+									 {
+										 //No available tickets at this screening time
+										 if (j < no_theaters - 1)
+										 {
+											 if (movie[i].screening_info[j + 1].theater.capacity - movie[i].screening_info[j + 1].theater.reserved_seats >= required_tickets)
+											 {
+												 //Next screening time suggestion with the no. of tickets required
+												 if (MessageBox::Show("Unfortunately, theater seats at this time are fully booked, would you like to book same number of tickets at " + time_calc(movie[i].screening_info[j + 1].time.hour, movie[i].screening_info[j + 1].time.min) + "?", "Suggestion", MessageBoxButtons::OKCancel, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::OK)
+												 {
+													 //Booking Succeeded >> Accepted next screening time suggestion with required no. of tickets
+													 booked_tickets = required_tickets;
+													 booking_succeeded(i, j + 1, booked_tickets);
+													 break;
+												 }
+												 else
+												 {
+													 //Booking Cancelled >> Rejected next screening time suggestion with required no. of tickets
+													 booking_cancelled();
+													 break;
+												 }
+											 }
+											 else if (movie[i].screening_info[j + 1].theater.capacity - movie[i].screening_info[j + 1].theater.reserved_seats < required_tickets && movie[i].screening_info[j + 1].theater.capacity != movie[i].screening_info[j + 1].theater.reserved_seats)
+											 {
+												 //Next screening time suggestion with available no. of tickets less than required
+												 if (MessageBox::Show("Unfortunately, theater seats at this time are fully booked.\nThere are " + Convert::ToString(movie[i].screening_info[j + 1].theater.capacity - movie[i].screening_info[j + 1].theater.reserved_seats) + " available tickets at " + time_calc(movie[i].screening_info[j + 1].time.hour, movie[i].screening_info[j + 1].time.min) + ".\nWould you like to book them?", "Suggestion", MessageBoxButtons::OKCancel, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::OK)
+												 {
+													 //Booking Succeeded >> Accepted next screening time suggestion with no. of tickets less than required  
+													 booked_tickets = movie[i].screening_info[j + 1].theater.capacity - movie[i].screening_info[j + 1].theater.reserved_seats;
+													 booking_succeeded(i, j + 1, booked_tickets);
+													 break;
+												 }
+												 else{
+													 //Booking Cancelled >> Rejected Next Screening Time Suggestion with the no. of tickets less than required
+													 booking_cancelled();
+													 break;
+												 }
+											 }
+										 }
+										 else
+										 {
+											 PlaySound(TEXT("Booking cancelled.wav"), NULL, SND_FILENAME);
+											 MessageBox::Show("Unfortunately, theater seats are fully booked today.\nWe remain at your service for any future bookings you might wish to make.", "Booking cancelled");
+											 break;
+										 }
+									 }
+									 else if (movie[i].screening_info[j].theater.capacity - movie[i].screening_info[j].theater.reserved_seats < required_tickets)
+									 {
+										 //No. of available tickets less than required
+										 if (MessageBox::Show("There are only " + Convert::ToString(movie[i].screening_info[j].theater.capacity - movie[i].screening_info[j].theater.reserved_seats) + " tickets available, would you like to book them?", "Suggestion", MessageBoxButtons::OKCancel, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::OK)
+										 {
+											 //Booking Succeeded >> Accepted available no. of tickets
+											 booked_tickets = movie[i].screening_info[j].theater.capacity - movie[i].screening_info[j].theater.reserved_seats;
+											 booking_succeeded(i, j, booked_tickets);
+											 break;
+										 }
+										 else
+										 {
+											 //Booking Cancelled >> Rejected available no. of tickets
+											 booking_cancelled();
+											 break;
+										 }
+									 }
+								 }
+								 if (j != no_theaters - 1 && (abs(time_now.hour - movie[i].screening_info[j].time.hour) < abs(time_now.hour - movie[i].screening_info[j + 1].time.hour)) && movie[i].screening_info[j + 1].theater.capacity != movie[i].screening_info[j + 1].theater.reserved_seats)
+								 {
+									 //Next screening time suggestion far from time now
+									 if (MessageBox::Show("You are late for " + time_calc(movie[i].screening_info[j].time.hour, movie[i].screening_info[j].time.min) + ".\nNext screening time is at " + time_calc(movie[i].screening_info[j + 1].time.hour, movie[i].screening_info[j + 1].time.min) + ", would you like to book tickets at that time?", "Suggestion", MessageBoxButtons::OKCancel, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Cancel)
+									 {
+										 //Booking Cancelled >> Rejected next available screening time suggestion
+										 time_available = true;
+										 booking_cancelled();
+										 break;
+									 }
+								 }
+							 }
+							 if (!time_available)
+							 {
+								 //Booking Cancelled >> No available screening time
+								 PlaySound(TEXT("Booking cancelled.wav"), NULL, SND_FILENAME);
+								 MessageBox::Show("Unfortunately, there are no available screening times today.\nWe remain at your service for any future bookings you might wish to make.", "Booking cancelled");
+							 }
+						 }
+					 }
+				 }
