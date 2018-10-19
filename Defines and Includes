@@ -1,0 +1,11 @@
+#include <string>
+#include <fstream>
+#include <msclr\marshal_cppstd.h>
+#include "MyForm1.h"
+#include "MyForm2.h"
+#include "MyForm3.h"
+#include "MyForm4.h"
+
+#define no_movies 4
+#define no_actors 2
+#define no_theaters 3
