@@ -1,0 +1,28 @@
+void get_movie_info(){
+	StreamReader^ fileRead = gcnew StreamReader("cinema.txt");
+	String^v;
+	for (int i = 0; i < no_movies; ++i){
+		v = fileRead->ReadLine();
+		movie[i].title = ToStd(v);
+		v = fileRead->ReadLine();
+		movie[i].director = ToStd(v);
+		for (int j = 0; j < no_actors; ++j){
+			v = fileRead->ReadLine();
+			movie[i].actor[j] = ToStd(v);
+		}
+		v = fileRead->ReadLine();
+		movie[i].rating = ToStd(v);
+		for (int j = 0; j < no_theaters; ++j){
+			v = fileRead->ReadLine();
+			movie[i].screening_info[j].theater.id = ToStd(v);
+			v = fileRead->ReadLine();
+			movie[i].screening_info[j].time.hour = Convert::ToInt32(v);
+			v = fileRead->ReadLine();
+			movie[i].screening_info[j].time.min = Convert::ToInt32(v);
+			v = fileRead->ReadLine();
+			movie[i].screening_info[j].theater.capacity = Convert::ToInt32(v);
+			v = fileRead->ReadLine();
+			movie[i].screening_info[j].theater.reserved_seats = Convert::ToInt32(v);
+		}
+	}
+}
