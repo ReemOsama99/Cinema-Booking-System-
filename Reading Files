@@ -1,3 +1,4 @@
+//reading files and struct initialization
 void get_movie_info(){
 	StreamReader^ fileRead = gcnew StreamReader("cinema.txt");
 	String^v;
