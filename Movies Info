@@ -1,0 +1,9 @@
+for (int i = 0; i < no_movies; ++i){
+				 lbx_movie_info->Items->Add(ToSystem(movie[i].title));
+				 lbx_movie_info->Items->Add(ToSystem(movie[i].director));
+				 for (int j = 0; j < no_actors; ++j){
+					 lbx_movie_info->Items->Add(ToSystem(movie[i].actor[j]));
+				 }
+				 lbx_movie_info->Items->Add(ToSystem(movie[i].rating));
+				 lbx_movie_info->Items->Add("\n\n");
+			 }
