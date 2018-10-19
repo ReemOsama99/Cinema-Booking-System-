@@ -1,0 +1,8 @@
+String^ ToSystem(string s){
+	String^g = gcnew String(s.c_str());
+	return g;
+}
+string ToStd(String^ s){
+	 string g = msclr::interop::marshal_as<string>(s);
+	 return g;
+}
