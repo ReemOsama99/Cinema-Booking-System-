@@ -1,0 +1,8 @@
+lbx_id_time->Items->Clear();
+				 for (int i = 0; i < no_movies; ++i) {
+					 if (ToSystem(movie[i].title) == cbx_show_movie->Text) {
+						 for (int j = 0; j < no_theaters; ++j) {
+							 lbx_id_time->Items->Add(ToSystem(movie[i].screening_info[j].theater.id) + "\t" + time_calc(movie[i].screening_info[j].time.hour, movie[i].screening_info[j].time.min));
+						 }
+					 }
+				 }
