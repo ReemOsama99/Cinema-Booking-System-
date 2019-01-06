@@ -1,0 +1,6 @@
+﻿1>------ Build started: Project: Project1, Configuration: Debug Win32 ------
+1>  MyForm.cpp
+1>c:\users\mubarak\documents\visual studio 2013\projects\project1\project1\MyForm.h(724): warning C4353: nonstandard extension used: constant 0 as function expression.  Use '__noop' function intrinsic instead
+1>MyForm.cpp(7): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
+1>  Project1.vcxproj -> C:\Users\Mubarak\documents\visual studio 2013\Projects\Project1\Debug\Project1.exe
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
